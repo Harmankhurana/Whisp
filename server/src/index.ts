@@ -19,5 +19,19 @@ wss.on("connection", (socket) => {
             });
         }
 
+        if(parsedMessage.type === "chat") {
+            let currectUserRoom = null;
+            for(let i = 0; i < allSockets.length; i++) {
+                if(allSockets[i]?.socket === socket) {
+                    currectUserRoom = allSockets[i]?.room;
+                };
+            }
+
+            for(let i = 0; i < allSockets.length; i++) {
+                if(allSockets[i]?.room === currectUserRoom) {
+                    allSockets[i]?.socket.send(parsedMessage.payload.message);
+                }
+            }
+        }
     });
 });
