@@ -10,6 +10,14 @@ let allSockets: User[] = [];
 
 wss.on("connection", (socket) => {
     socket.on("message", (message) => {
+        const parsedMessage = JSON.parse(message as unknown as string);
+
+        if(parsedMessage.type === "join") {
+            allSockets.push({
+                socket,
+                room: parsedMessage.payload.room
+            });
+        }
 
     });
 });
